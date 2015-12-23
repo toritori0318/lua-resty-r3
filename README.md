@@ -37,19 +37,19 @@ location / {
     local r3router = require "resty.r3";
     local r = r3router.new()
     -- routing
-    r.get("/", function(tokens, params)
+    r:get("/", function(tokens, params)
       ngx.say("hello r3!")
     end)
-    r.get("/foo", foo)
-    r.get("/foo/{id}/{name}", foo)
-    r.post("/foo/{id}/{name}", foo)
+    r:get("/foo", foo)
+    r:get("/foo/{id}/{name}", foo)
+    r:post("/foo/{id}/{name}", foo)
     -- don\'t forget!
-    r.compile()
+    r:compile()
 
     -- dispatcher
     local ok = r:dispatch_ngx()
     ---- or manual
-    ---- local ok = r.dispatch("GET", "/foo/123/999", ngx.req.get_uri_args(), ngx.req.get_post_args())
+    ---- local ok = r:dispatch("GET", "/foo/123/999", ngx.req.get_uri_args(), ngx.req.get_post_args())
     if ok then
       ngx.status = 200
     else
@@ -85,7 +85,7 @@ location / {
     -- dispatcher
     local ok = r:dispatch_ngx()
     ---- or manual
-    ---- local ok = r.dispatch("GET", "/foo/123/999", ngx.req.get_uri_args(), ngx.req.get_post_args())
+    ---- local ok = r:dispatch("GET", "/foo/123/999", ngx.req.get_uri_args(), ngx.req.get_post_args())
     if ok then
       ngx.status = 200
     else
@@ -99,8 +99,6 @@ location / {
 ## Docker Setup
 
 ```
-docker build -t toritori0318/lua-resty-r3 .
-
+cd /path/to/lua-resty-r3
 docker run -p 89:80 -v "$(pwd)":/code -it toritori0318/lua-resty-r3 /opt/openresty/nginx/sbin/nginx
-
 ```
